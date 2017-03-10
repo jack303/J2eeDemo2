@@ -7,4 +7,6 @@ import com.hwadee.entity.Account;
  */
 public interface AccountService {
     Account login(String email, String password);
+
+    int signup(Account account);
 }

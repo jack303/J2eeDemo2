@@ -29,10 +29,10 @@ public class LoginControllerTest {
     //private ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-context.xml");
     @Autowired
     LoginController loginController;
-    @Test
-    public void testLogin()
-    {
-        //LoginController loginController = (LoginController)  context.getBean("loginController");
-        loginController.getAccountService().login("123@qq.com","password");
-    }
+//    @Test
+//    public void testLogin()
+//    {
+//        //LoginController loginController = (LoginController)  context.getBean("loginController");
+//        loginController.getAccountService().login("123@qq.com","password");
+//    }
 }

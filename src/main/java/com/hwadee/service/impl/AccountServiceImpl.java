@@ -20,7 +20,7 @@ public class AccountServiceImpl implements AccountService {
         account.setEmail(email);
         account.setPassword(password);
         Account check = accountMapper.getAccountByEmail(email);
-        System.out.print(check.toString());
+        System.out.println(check.toString());
         if(check==null)
         {
             throw new RuntimeException("the account is null");
@@ -30,5 +30,15 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("the password is wrong");
         }
         return account;
+    }
+
+    @Override
+    public int signup(Account account) {
+        int res = accountMapper.insert(account);
+        if(res==0)
+        {
+            throw new RuntimeException("insert failed!!");
+        }
+        return 1;
     }
 }

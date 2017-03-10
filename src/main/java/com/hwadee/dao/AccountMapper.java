@@ -16,4 +16,5 @@ public interface AccountMapper {
     Account getAccountById(int aid);
     Account getAccountByEmail(String email);
     List<Account> findAll(AccountDto accountDto);
+    int insert(Account account);
 }

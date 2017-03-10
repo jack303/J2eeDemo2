@@ -7,7 +7,7 @@
         SELECT aid,email,nick_name as nickName ,'password',follow,fans,weibo,pic from account where aid=#{value}
     </select>
     <select id="getAccountByEmail" resultType="com.hwadee.entity.Account" parameterType="String">
-        SELECT aid,email,nick_name as nickName ,'password',follow,fans,weibo,pic from account where email=#{value}
+        SELECT aid,email,nick_name as nickName ,password,follow,fans,weibo,pic from account where email=#{value}
     </select>
     <!--将要查的不同类型的数据封装成一个类-->
     <select id="findAll" resultType="com.hwadee.entity.Account" parameterType="com.hwadee.model.AccountDto">
@@ -16,4 +16,9 @@
         WHERE nick_name LIKE CONCAT('%',#{nickName},'%')
         limit #{start},#{size}
     </select><!--#{param1},#{param2 } it is right,too-->
+
+    <insert id="insert" parameterType="Account">
+        insert into account (email,nick_name,password)
+    values (#{email,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+    </insert>
 </mapper>

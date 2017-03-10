@@ -23,7 +23,7 @@
     delete from comment
     where cid = #{cid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hwadee.entity.Comment" >
+  <insert id="insert" parameterType="Comment" >
     insert into comment (cid, aid, wid,
       ccontent, ctime)
     values (#{cid,jdbcType=INTEGER}, #{aid,jdbcType=INTEGER}, #{wid,jdbcType=INTEGER},
