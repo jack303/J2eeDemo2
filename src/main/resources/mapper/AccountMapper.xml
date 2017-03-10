@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwadee.dao.AccountMapper"><!--<mapper namespace="AccountMapper">-->
+    <select id="getAccountById" resultType="com.hwadee.entity.Account" parameterType="int">
+        SELECT aid,email,nick_name as nickName ,'password',follow,fans,weibo,pic from account where aid=#{value}
+    </select>
+    <select id="getAccountByEmail" resultType="com.hwadee.entity.Account" parameterType="String">
+        SELECT aid,email,nick_name as nickName ,'password',follow,fans,weibo,pic from account where email=#{value}
+    </select>
+    <!--将要查的不同类型的数据封装成一个类-->
+    <select id="findAll" resultType="com.hwadee.entity.Account" parameterType="com.hwadee.model.AccountDto">
+        SELECT aid,email,nick_name as nickName ,'password',follow,fans,weibo,pic
+        from account
+        WHERE nick_name LIKE CONCAT('%',#{nickName},'%')
+        limit #{start},#{size}
+    </select><!--#{param1},#{param2 } it is right,too-->
+</mapper>

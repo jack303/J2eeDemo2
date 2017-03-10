@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+    <context:property-placeholder location="classpath:generator.properties" />
+    <!-- 连接池 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClass}" />
+        <property name="jdbcUrl" value="${jdbc.connectionURL}"/>
+        <property name="user" value="${jdbc.userId}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- 配置sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 实例化sqlSessionFactory时需要使用上述配置好的数据源以及SQL映射文件 -->
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <property name="typeAliasesPackage" value="com.hwadee.entity;com.hwadee.model" />
+        <property name="mapperLocations" value="classpath*:mapper/*.xml" />
+    </bean>
+    <!-- 配置扫描器 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描cn.edu.nuc.ssm.dao这个包以及它的子包下的所有映射接口类 -->
+        <property name="basePackage" value="com.hwadee.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+
+    </bean>
+    <!-- 配置Spring的事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- 注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <context:component-scan base-package="com.hwadee">
+        <!--排除spring-mvc扫描的注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+</beans>
+        <!--
+        <?xml version="1.0" encoding="UTF-8"?>
+        <beans xmlns="http://www.springframework.org/schema/beans"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:context="http://www.springframework.org/schema/context"
+               xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+            &lt;!&ndash;反射&ndash;&gt;
+            &lt;!&ndash;<bean id="loginController" class="com.hwadee.controller.LoginController">&ndash;&gt;
+                &lt;!&ndash;&lt;!&ndash;&ndash;&gt;
+                &lt;!&ndash;loginController 类中 依赖于accountService&ndash;&gt;
+                &lt;!&ndash;依赖注入   无须手动初始化AccountServiceImp 降低耦合&ndash;&gt;&ndash;&gt;
+                &lt;!&ndash;<property name="accountService" ref="accountService"></property>&ndash;&gt;
+            &lt;!&ndash;</bean>&ndash;&gt;
+            &lt;!&ndash;<bean id="accountService" class="com.hwadee.service.impl.AccountServiceImpl">&ndash;&gt;
+            &lt;!&ndash;</bean>&ndash;&gt;
+
+
+
+            &lt;!&ndash;<bean id="weiboDeployController" class="com.hwadee.controller.WeiboDeployController">&ndash;&gt;
+                &lt;!&ndash;<property name="weiboService" ref="WeiboService"></property>&ndash;&gt;
+            &lt;!&ndash;</bean>&ndash;&gt;
+            &lt;!&ndash;<bean id="WeiboService" class="com.hwadee.service.impl.WeiboServiceImpl"></bean>&ndash;&gt;
+            <context:component-scan base-package="com"></context:component-scan>
+        </beans>-->
