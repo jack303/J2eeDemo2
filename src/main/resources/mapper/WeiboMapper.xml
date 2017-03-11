@@ -116,4 +116,71 @@
       comment = #{comment,jdbcType=INTEGER}
     where wid = #{wid,jdbcType=INTEGER}
   </update>
+
+  <select id="list" parameterType="int" resultType="WeiboDto">
+    SELECT
+    m.wid "weibo.wid",
+    m.aid "account.aid",
+    m.wcontent "weibo.wcontent",
+    m.last_update_time "weibo.lastUpdateTime",
+    m.service "weibo.service",
+    m.liked "weibo.liked",
+    m.comment "weibo.comment",
+    a.nick_name "account.nickName",
+    a.fans "account.fans",
+    a.follow "account.follow",
+    a.weibo "account.weibo",
+    a.pic "account.pic",
+    ifnull(l.wid, -1) "liked.aid"
+    FROM
+    (
+    SELECT
+    w.wid,
+    w.aid,
+    w.wcontent,
+    w.last_update_time,
+    w.service,
+    w.liked,
+    w.comment
+    FROM
+    weibo w
+    WHERE
+    EXISTS (
+    SELECT
+    1
+    FROM
+    follow f
+    WHERE
+    w.aid = f.follow_aid
+    AND f.aid = #{aid}
+    )
+    OR w.aid = #{aid}
+    ORDER BY w.wid desc
+    limit #{start}, #{offset}
+    ) m
+    LEFT JOIN account a ON m.aid = a.aid
+    LEFT JOIN liked l ON m.wid =
+    l.wid
+    AND a.aid = l.aid
+    AND l.aid = #{aid}
+
+  </select>
+
+  <select id="count" parameterType="int" resultType="int">
+    SELECT
+    count(1)
+    FROM
+    weibo w
+    WHERE
+    EXISTS (
+    SELECT
+    1
+    FROM
+    follow f
+    WHERE
+    w.aid = f.follow_aid
+    AND f.aid = #{value}
+    )
+    OR w.aid = #{value}
+  </select>
 </mapper>

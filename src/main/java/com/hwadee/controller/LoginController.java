@@ -23,13 +23,15 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     //    }
 //        return accountService;
+    @Autowired
+    private AccountService accountService;
     @RequestMapping(value = "login")
     public String login(@Param("email") String email, @Param("password") String password, HttpSession session)
     {
         try {
             Account account = accountService.login(email,password);
             session.setAttribute("user",account);
-            return "redirect:/";
+            return "redirect:/u/" + account.getAid() + "/home";
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -38,13 +40,12 @@ public class LoginController extends HttpServlet {
         return "forward:login.jsp";
     }
 
-    @Autowired
-    private AccountService accountService;
 
-    @RequestMapping(value="/")
+
+    /*@RequestMapping(value="/")
     public String index(){
-        return "welcomPage";
-    }
+        return "/u"+"/home";
+    }*/
 /*protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("username");
         String password = req.getParameter("password");
