@@ -4,3 +4,12 @@
 apache dbcp
 alibaba druid
 c3p0
+
+3.11
+
+
+ajax: controller 返回对象 @response body ，ajax 不刷新页面请求数据，js clone div 添加
+ restController
+servlet 拦截器：拦截请求，判定是否通过，，， 需要配置spring-mvc ： <mvc:interceptor>
+
+事务：@Transactional 外抛异常才会事务回滚
